@@ -1,0 +1,157 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, #4b0082 0%, #6a0dad 100%);
+  color: white;
+  padding-top: 20px;
+  position: fixed;
+  transition: width 0.3s ease;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === LOGO === */
+.logo {
+  width: 80%;
+  margin-bottom: 20px;
+  border-radius: 15px;
+}
+
+/* === MENU SIDEBAR === */
+.menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.menu li {
+  padding: 12px 25px;
+  transition: all 0.3s ease;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.menu li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding-left: 30px;
+  border-left: 3px solid #ffc107;
+}
+
+/* === KONTEN UTAMA === */
+.content {
+  margin-left: 250px;
+  padding: 30px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  transition: margin-left 0.3s ease;
+}
+
+.content p {
+  font-size: 16px; /* Sama dengan label */
+  font-weight: 600; /* Sama dengan label */
+  margin: 40px; /* Sama dengan margin label */
+  display: block;
+}
+
+/* === FORM INPUT === */
+form {
+  background: #f3f3f3;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+}
+
+form label {
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background: #6a0dad;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #4b0082;
+}
+
+/* === HASIL PREDIKSI === */
+.result {
+  background: #f3f3f3;
+  padding: 40px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .content {
+    margin-left: 200px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 20px;
+  }
+}

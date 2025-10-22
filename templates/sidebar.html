@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Prediksi Ulasan OVO</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='OVO.jpg') }}"
+    />
+
+    <!-- Import Font Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <!-- Overlay -->
+  <div
+    id="overlay"
+    style="
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      /* backdrop-filter: blur(4px);
+      background-color: rgba(0, 0, 0, 0.2); */
+      z-index: 900;
+    "
+    onclick="toggleSidebar()"
+  ></div>
+
+  <!-- Tombol Toggle (hamburger) -->
+  <button
+    onclick="toggleSidebar()"
+    style="
+      display: none;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: #4b0082;
+      color: white;
+      border: none;
+      font-size: 24px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      z-index: 1100;
+      cursor: pointer;
+    "
+    id="sidebar-toggle"
+  >
+    ☰
+  </button>
+
+  <!-- Sidebar -->
+  <div
+    id="sidebar"
+    style="
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(180deg, #4b0082 0%, #6a0dad 100%);
+      color: white;
+      padding-top: 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      transition: transform 0.3s ease;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      z-index: 1000;
+      overflow-y: auto;
+    "
+  >
+    <img
+      src="{{ url_for('static', filename='Logo OVO.png') }}"
+      alt="OVO Logo"
+      style="width: 80%; margin-bottom: 20px; border-radius: 15px"
+    />
+
+    <!-- List Route Page -->
+    <ul style="list-style: none; padding: 0; width: 100%; text-align: left">
+      <li
+        style="
+          padding: 12px 25px;
+          display: flex;
+          align-items: center;
+          border-radius: 5px;
+        "
+        onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'"
+        onmouseout="this.style.backgroundColor='transparent'"
+      >
+        <a
+          href="/"
+          style="
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            display: flex;
+            align-items: center;
+          "
+          ><svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="margin-right: 10px"
+            <!--
+            Menambahkan
+            margin
+            kanan
+            untuk
+            memberi
+            jarak
+            --
+          >
+            >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"
+            />
+          </svg>
+          Panduan</a
+        >
+      </li>
+      <li
+        style="
+          padding: 12px 25px;
+          display: flex;
+          align-items: center;
+          border-radius: 5px;
+        "
+        onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'"
+        onmouseout="this.style.backgroundColor='transparent'"
+      >
+        <a
+          href="{{ url_for('predict_aspect_sentiment') }}"
+          style="
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            display: flex;
+            align-items: center;
+          "
+          ><svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="margin-right: 10px"
+          >
+            >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+            />
+          </svg>
+          Prediksi</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <!-- Script untuk Toggle & Responsif -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+
+      if (sidebar.style.transform === "translateX(-100%)") {
+        sidebar.style.transform = "translateX(0)";
+        overlay.style.display = "block";
+      } else {
+        sidebar.style.transform = "translateX(-100%)";
+        overlay.style.display = "none";
+      }
+    }
+
+    // Tampilkan tombol hamburger di layar kecil
+    function handleResponsiveSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const toggle = document.getElementById("sidebar-toggle");
+      const overlay = document.getElementById("overlay");
+
+      if (window.innerWidth <= 768) {
+        sidebar.style.transform = "translateX(-100%)";
+        toggle.style.display = "block";
+        overlay.style.display = "none";
+      } else {
+        sidebar.style.transform = "translateX(0)";
+        toggle.style.display = "none";
+        overlay.style.display = "none";
+      }
+    }
+
+    window.addEventListener("load", handleResponsiveSidebar);
+    window.addEventListener("resize", handleResponsiveSidebar);
+  </script>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Prediksi Ulasan OVO</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='OVO.jpg') }}"
+    />
+
+    <!-- Import Font Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Responsif -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      @media (max-width: 1024px) {
+        h1 {
+          width: 100% !important;
+          font-size: 1.8rem !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column !important;
+        }
+
+        #main-content {
+          margin-left: 0 !important;
+          padding: 20px !important;
+        }
+
+        h1 {
+          font-size: 1.5rem !important;
+          padding: 12px !important;
+        }
+
+        .content-box {
+          padding: 25px 20px !important;
+          margin: 30px auto !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.3rem !important;
+          padding: 10px !important;
+        }
+        .content-box {
+          padding: 20px 16px !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    style="
+      display: flex;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      flex-direction: row;
+    "
+  >
+    {% include 'sidebar.html' %}
+
+    <!-- KONTEN UTAMA -->
+    <div
+      id="main-content"
+      style="
+        margin-left: 250px;
+        padding: 30px;
+        width: 100%;
+        min-height: 100vh;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      "
+    >
+      <h1
+        style="
+          /* background: linear-gradient(to right, #6a0dad, #d69ade); */
+          background: linear-gradient(to right, #6a0dad 0%, #37b5b6 100%);
+          color: white;
+          padding: 12px;
+          font-size: 2rem;
+          font-weight: bold;
+          border-radius: 12px;
+          margin-bottom: 70px;
+          margin-top: 0;
+          text-align: center;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+          width: 900px;
+          max-width: 100%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        "
+      >
+        SISTEM PREDIKSI ULASAN OVO
+      </h1>
+
+      <!-- KONTEN -->
+      <div
+        class="content-box"
+        style="
+          background: #f3f3f3;
+          padding: 30px;
+          border-radius: 10px;
+          width: 100%;
+          /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          max-width: 900px;
+          box-sizing: border-box;
+        "
+      >
+        <p
+          style="
+            font-size: 18px;
+            font-weight: 500;
+            color: #444;
+            font-size: medium;
+            line-height: 1.8;
+            margin-bottom: 30px;
+          "
+        >
+          Sistem ini dikembangkan untuk menganalisis ulasan pengguna terhadap
+          aplikasi
+          <strong style="color: #6a0dad; font-size: medium">OVO</strong>. Dengan
+          menggunakan teknologi
+          <strong style="font-style: italic"
+            >Natural Language Processing</strong
+          >
+          <strong>(NLP)</strong>, sistem mampu mengidentifikasi aspek yang
+          menjadi perhatian pengguna serta sentimen yang terkandung dalam setiap
+          ulasan.
+        </p>
+
+        <h2
+          style="
+            color: #6a0dad;
+            font-size: larger;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+          "
+        >
+          📝 Panduan Penggunaan Sistem
+        </h2>
+
+        <ul
+          style="
+            padding-left: 0;
+            list-style-type: none;
+            color: #333;
+            font-size: medium;
+            line-height: 1.8;
+          "
+        >
+          <li style="margin-bottom: 15px">
+            ✅ Sistem ini hanya menggunakan data ulasan yang telah melalui
+            proses
+            <strong>pembersihan</strong>
+            <strong style="font-style: italic">(cleaning)</strong>, sehingga
+            tidak mencakup seluruh ulasan aplikasi OVO. Ini bertujuan untuk
+            keperluan penelitian skala skripsi.
+          </li>
+          <li style="margin-bottom: 15px">
+            ✅ Anda dapat melakukan prediksi ulasan dengan cara
+            <strong>mengetik langsung teks atau kalimat</strong> pada kolom
+            input. Sistem akan otomatis menganalisis aspek dan sentimen dari
+            ulasan tersebut.
+          </li>
+          <li style="margin-bottom: 15px">
+            ✅ Anda juga bisa mengunggah file berformat
+            <strong>CSV</strong> untuk memproses beberapa ulasan sekaligus. File
+            CSV harus memiliki
+            <code
+              style="
+                background: #f0f0f0;
+                padding: 3px 6px;
+                border-radius: 4px;
+                font-size: large;
+              "
+              >review</code
+            >
+            sebagai nama kolom.
+          </li>
+          <li>
+            ⚠️ Hasil prediksi <strong>tidak 100% akurat</strong> karena
+            keterbatasan model klasifikasi. Namun, sistem telah terbukti
+            memberikan hasil yang cukup sesuai dengan konteks ulasan dalam
+            banyak kasus.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

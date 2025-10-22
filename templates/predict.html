@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Prediksi Ulasan OVO</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='OVO.jpg') }}"
+    />
+
+    <!-- Import Font Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Import Animate CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <!-- CSS Main Content + Sidebar -->
+    <style>
+      #main-content {
+        padding: 30px;
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        min-height: 100vh;
+        background-color: #fff;
+        transition: margin-left 0.3s ease;
+        /* box-sizing: border-box; */
+        align-items: center;
+        justify-items: center;
+      }
+
+      /* Tablet dan Mobile */
+      @media (max-width: 768px) {
+        #main-content {
+          margin-left: 0;
+          width: 100%;
+          padding: 20px;
+        }
+        h1 {
+          font-size: 1.5rem !important;
+          padding: 12px !important;
+        }
+
+        .prediction-header,
+        .prediction-row {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          font-size: 13px !important;
+          padding: 10px 14px !important;
+        }
+
+        .prediction-row div,
+        .prediction-header div {
+          width: 100%;
+          margin-bottom: 0;
+        }
+
+        #main-content {
+          margin-left: 0 !important;
+          padding: 20px !important;
+        }
+      }
+
+      /* Tablet */
+      @media (max-width: 768px) {
+        .responsive-form {
+          padding: 20px !important;
+        }
+
+        #input-text {
+          font-size: 13px !important;
+        }
+
+        #submit-btn {
+          font-size: 15px !important;
+        }
+
+        label,
+        p {
+          font-size: 14px !important;
+        }
+
+        #csv-preview-container {
+          padding: 20px !important;
+        }
+
+        #csv-preview-container h3 {
+          font-size: 15px !important;
+        }
+
+        #csv-preview-table {
+          font-size: 13px !important;
+        }
+
+        .pagination-btn {
+          font-size: 13px !important;
+          padding: 8px 16px !important;
+        }
+
+        #csv-page-info {
+          font-size: 14px !important;
+        }
+
+        #text-result-container,
+        #result-container {
+          padding: 20px !important;
+        }
+
+        #text-result-container h3,
+        #result-container h3 {
+          font-size: 14px !important;
+        }
+
+        .prediction-header,
+        .prediction-row {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          font-size: 13px !important;
+          padding: 10px 14px !important;
+        }
+
+        .prediction-row div {
+          margin-bottom: 6px;
+          width: 100%;
+        }
+
+        .prediction-header div {
+          margin-bottom: 6px;
+          width: 100%;
+        }
+        #loading-indicator {
+          padding: 20px !important;
+          font-size: 14px !important;
+        }
+
+        #loading-indicator h3 {
+          font-size: 15px !important;
+        }
+
+        #loading-indicator p {
+          font-size: 14px !important;
+        }
+
+        #progress-bar {
+          font-size: 13px !important;
+          height: 18px !important;
+        }
+        #result-container {
+          padding: 20px !important;
+        }
+
+        #result-container h3 {
+          font-size: 14px !important;
+        }
+
+        #prediction-table {
+          font-size: 13px !important;
+        }
+
+        .pagination-btn {
+          font-size: 12px !important;
+          padding: 6px 12px !important;
+        }
+
+        #page-info {
+          font-size: 14px !important;
+        }
+
+        .btn-download,
+        .btn-cancel {
+          padding: 8px 16px !important;
+          font-size: 14px !important;
+        }
+
+        .modal-close {
+          font-size: 24px !important;
+        }
+
+        #download-confirm > div {
+          padding: 20px !important;
+        }
+
+        #download-confirm h3 {
+          font-size: 18px !important;
+        }
+
+        #download-confirm div[style*="margin-top: 20px"] {
+          font-size: 14px !important;
+        }
+        #toast {
+          font-size: 13px !important;
+          padding: 10px 16px !important;
+          max-width: 90% !important;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        #main-content {
+          margin-top: 70px !important;
+        }
+        h1 {
+          font-size: 1.3rem !important;
+          padding: 10px !important;
+        }
+        .responsive-form {
+          padding: 20px !important;
+        }
+
+        #input-text {
+          font-size: 12px !important;
+        }
+
+        label,
+        p {
+          font-size: 13px !important;
+        }
+
+        #submit-btn {
+          font-size: 14px !important;
+        }
+
+        #download-confirm .modal-animate {
+          border-radius: 12px;
+        }
+
+        #download-confirm h3 {
+          font-size: 18px;
+        }
+
+        #download-confirm .btn-cancel,
+        #download-confirm .btn-download {
+          font-size: 14px;
+          padding: 10px 16px;
+        }
+
+        #csv-preview-container {
+          padding: 20px !important;
+        }
+
+        #csv-preview-container h3 {
+          font-size: 14px !important;
+        }
+
+        #csv-preview-table {
+          font-size: 12px !important;
+        }
+
+        .pagination-btn {
+          font-size: 12px !important;
+          padding: 6px 12px !important;
+        }
+
+        #csv-page-info {
+          font-size: 14px !important;
+        }
+
+        #text-result-container,
+        #result-container {
+          padding: 20px !important;
+        }
+
+        #text-result-container h3,
+        #result-container h3 {
+          font-size: 13px !important;
+        }
+
+        .prediction-header,
+        .prediction-row {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          font-size: 12px !important;
+          padding: 10px 12px !important;
+        }
+
+        .prediction-row div,
+        .prediction-header div {
+          width: 100%;
+          margin-bottom: 0;
+        }
+        #loading-indicator {
+          padding: 20px !important;
+          font-size: 13px !important;
+        }
+
+        #loading-indicator h3 {
+          font-size: 14px !important;
+        }
+
+        #loading-indicator p {
+          font-size: 13px !important;
+        }
+
+        #progress-bar {
+          font-size: 12px !important;
+          height: 18px !important;
+        }
+        #toast {
+          font-size: 12px !important;
+          padding: 8px 14px !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    "
+  >
+    <div style="display: flex; min-height: 100vh">
+      {% include 'sidebar.html' %}
+
+      <!-- KONTEN UTAMA -->
+      <div id="main-content">
+        <!-- Bungkus Judul & Form dalam 1 Kontainer -->
+        <div class="responsive-container" style="max-width: 900px; width: 100%">
+          <h1
+            style="
+              margin-bottom: 70px;
+              margin-top: 0;
+              /* background: linear-gradient(to right, #6a0dad, #d69ade); */
+              background: linear-gradient(to right, #6a0dad 0%, #37b5b6 100%);
+              /* background: #6a0dad; */
+              color: white;
+              padding: 12px;
+              font-size: 2rem;
+              font-weight: bold;
+              text-align: center;
+              border-radius: 10px;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              text-transform: uppercase;
+              max-width: 100%;
+            "
+          >
+            PREDIKSI ASPEK DAN SENTIMEN ULASAN OVO
+          </h1>
+
+          <p style="margin-top: 0; font-size: 16px; margin-bottom: 15px">
+            Masukkan kalimat atau unggah file CSV yang ingin dianalisis:
+          </p>
+
+          <!-- Container form dengan responsive style -->
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+            "
+          >
+            <!-- FORM INPUT -->
+            <form
+              id="form-analisis"
+              method="POST"
+              action="{{ url_for('predict_aspect_sentiment') }}"
+              enctype="multipart/form-data"
+              class="responsive-form"
+              style="
+                background: #f3f3f3;
+                padding: 30px;
+                border-radius: 10px;
+                width: 100%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                max-width: 900px;
+                box-sizing: border-box;
+              "
+            >
+              <!-- Label dan Textarea -->
+              <label
+                for="input-text"
+                style="
+                  font-size: 16px;
+                  font-weight: 600;
+                  display: block;
+                  margin-bottom: 8px;
+                "
+              >
+                Masukkan Kalimat:
+              </label>
+
+              <div
+                style="
+                  position: relative;
+                  width: 100%;
+                  display: flex;
+                  align-items: flex-start;
+                "
+              >
+                <textarea
+                  id="input-text"
+                  name="input_text"
+                  placeholder="Tulis ulasan di sini..."
+                  rows="5"
+                  oninput="handleTextInput()"
+                  spellcheck="false"
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    padding-right: 40px;
+                    border-radius: 5px;
+                    border: 1px solid #ccc;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                    font-family: 'Poppins', sans-serif;
+                    resize: vertical;
+                  "
+                >
+{{ original or '' }}</textarea
+                >
+
+                <!-- Tombol silang untuk menghapus teks -->
+                <button
+                  id="clear-btn"
+                  type="button"
+                  onclick="clearInput(event)"
+                  style="
+                    position: absolute;
+                    right: 10px;
+                    background: none;
+                    border: none;
+                    top: 5px;
+                    font-size: 15px;
+                    cursor: pointer;
+                    color: #888;
+                    padding: 5px;
+                    display: none;
+                    transition: color 0.2s ease-in-out;
+                  "
+                  onmouseover="this.style.color='#555'"
+                  onmouseout="this.style.color='#888'"
+                >
+                  ✖
+                </button>
+              </div>
+
+              <!-- FILE CSV INPUT -->
+              <label
+                for="file-upload"
+                style="
+                  font-size: 16px;
+                  font-weight: 600;
+                  display: block;
+                  margin: 15px 0 8px;
+                "
+                >Unggah file CSV:</label
+              >
+              <input
+                type="file"
+                id="file-upload"
+                name="csv_file"
+                accept=".csv"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border-radius: 5px;
+                  border: 1px solid #ccc;
+                  font-size: 14px;
+                  box-sizing: border-box;
+                  background: white;
+                "
+                onchange="handleFileInput()"
+              />
+
+              <!-- Nama File yang Dianalisis -->
+              <p
+                id="file-name"
+                style="
+                  font-style: normal;
+                  font-size: 14px;
+                  color: #555;
+                  margin-top: 8px;
+                  font-family: 'Poppins', sans-serif;
+                "
+              >
+                {% if nama_file %} 📄 File: {{ nama_file }} {% endif %}
+              </p>
+
+              <!-- TABEL PREVIEW CSV -->
+              <!-- <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+            "
+          > -->
+              <!-- <div
+                id="csv-preview-container"
+                style="
+                  background: #f3f3f3;
+                  padding: 30px;
+                  border-radius: 10px;
+                  margin-top: 40px;
+                  /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                  text-align: left;
+                  width: 100%;
+                  max-width: 1000px;
+                  overflow-x: auto;
+                  display: none;
+                "
+              > -->
+              <!-- <h3
+                style="
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin-bottom: 10px;
+                  margin-top: 0;
+                "
+              >
+                Pratinjau File CSV:
+              </h3> -->
+
+              <!-- Tabel Preview CSV -->
+              <div style="overflow-x: auto">
+                <table
+                  id="csv-preview-table"
+                  border="1"
+                  cellpadding="8"
+                  cellspacing="0"
+                  style="
+                    font-size: 14px;
+                    width: 100%;
+                    border-collapse: collapse;
+                    background-color: #fff;
+                  "
+                ></table>
+              </div>
+
+              <!-- Navigasi Halaman Preview CSV -->
+              <div
+                id="csv-preview-pagination"
+                style="margin-top: 20px; text-align: center; display: none"
+              >
+                <style>
+                  .pagination-btn {
+                    background-color: #37b5b6;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    margin: 0 3px;
+                    font-size: 14px;
+                    border-radius: 30px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+                    font-family: "Poppins", sans-serif;
+                  }
+
+                  .pagination-btn:hover {
+                    background-color: #48a6a7;
+                    /* Tidak ada box-shadow di hover */
+                  }
+
+                  #csv-page-info {
+                    margin: 0 10px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    font-family: "Poppins", sans-serif;
+                  }
+                </style>
+
+                <button
+                  onclick="prevPreviewPage()"
+                  class="pagination-btn"
+                  onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                  onmouseup="this.style.boxShadow='none'"
+                  onmouseleave="this.style.boxShadow='none'"
+                >
+                  Sebelumnya
+                </button>
+                <span id="csv-page-info"></span>
+                <button
+                  onclick="nextPreviewPage()"
+                  class="pagination-btn"
+                  onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                  onmouseup="this.style.boxShadow='none'"
+                  onmouseleave="this.style.boxShadow='none'"
+                >
+                  Berikutnya
+                </button>
+              </div>
+              <!-- </div> -->
+
+              <!-- Tombol Submit -->
+              <button
+                type="button"
+                class="btn-analisis"
+                id="submit-btn"
+                onclick="validateAndSubmit()"
+                onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                onmouseup="this.style.boxShadow='none'"
+                onmouseleave="this.style.boxShadow='none'"
+              >
+                <span id="submit-text">Analisis</span>
+                <span id="submit-loader" style="display: none">
+                  <!-- SVG Loader -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1.4em"
+                    height="1.4em"
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    style="vertical-align: middle"
+                  >
+                    <circle cx="12" cy="2" r="0" fill="currentColor">
+                      <animate
+                        attributeName="r"
+                        begin="0"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(45 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.125s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(90 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.25s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(135 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.375s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(180 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.5s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(225 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.625s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(270 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.75s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="12"
+                      cy="2"
+                      r="0"
+                      fill="currentColor"
+                      transform="rotate(315 12 12)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.875s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;2;0;0"
+                      />
+                    </circle>
+                  </svg>
+                </span>
+              </button>
+
+              <style>
+                .btn-analisis {
+                  width: 100%;
+                  padding: 10px;
+                  background: #37b5b6;
+                  color: white;
+                  border: none;
+                  border-radius: 100px;
+                  font-size: 16px;
+                  cursor: pointer;
+                  font-family: inherit;
+                  box-sizing: border-box;
+                  transition: background 0.2s ease-in-out,
+                    font-weight 0.3s ease-in-out;
+                  margin-top: 15px;
+                }
+
+                .btn-analisis:hover {
+                  background: #48a6a7;
+                }
+
+                .btn-analisis.loading {
+                  background: #48a6a7 !important;
+                  cursor: not-allowed;
+                }
+              </style>
+            </form>
+          </div>
+
+          <!-- LOADING INDIKATOR UNTUK CSV -->
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+            "
+          >
+            <div
+              id="loading-indicator"
+              style="
+                display: none;
+                margin-top: 30px;
+                background: #f3f3f3;
+                padding: 30px;
+                border-radius: 10px;
+                /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                max-width: inherit;
+              "
+            >
+              <h3 style="margin-bottom: 10px; margin-top: 0; font-size: 16px">
+                ⏳ Analisis Sedang Berlangsung
+              </h3>
+              <p style="margin-bottom: 15px; font-size: medium">
+                Tunggu sebentar ya, file Anda sedang dianalisis.
+              </p>
+
+              <!-- Progress Bar Analisis -->
+              <div
+                style="
+                  width: 100%;
+                  background-color: #ddd;
+                  border-radius: 20px;
+                  overflow: hidden;
+                "
+              >
+                <div
+                  id="progress-bar"
+                  style="
+                    height: 20px;
+                    width: 0%;
+                    background: linear-gradient(to right, #d69ade, #6a0dad);
+                    color: white;
+                    text-align: center;
+                    font-size: 12px;
+                  "
+                >
+                  0%
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HASIL PREDIKSI TEKS -->
+          {% if hasil_prediksi %}
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+            "
+          >
+            <div
+              id="text-result-container"
+              style="
+                background: #f3f3f3;
+                padding: 30px;
+                border-radius: 12px;
+                margin-top: 40px;
+                /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                max-width: inherit;
+                font-family: 'Poppins', sans-serif;
+              "
+            >
+              <h3
+                style="
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin-bottom: 20px;
+                  margin-top: 0;
+                "
+              >
+                Hasil Prediksi Teks:
+              </h3>
+
+              <!-- Header Bar -->
+              <div
+                class="prediction-header"
+                style="
+                  display: flex;
+                  font-weight: 600;
+                  background-color: #6a0dad;
+                  color: white;
+                  padding: 10px 16px;
+                  border-radius: 8px 8px 0 0;
+                  font-size: 14px;
+                "
+              >
+                <div style="flex: 1">Aspek</div>
+                <div style="flex: 1">Sentimen</div>
+              </div>
+
+              <!-- Content Rows -->
+              <div
+                style="
+                  border: 1px solid #ddd;
+                  border-top: none;
+                  border-radius: 0 0 8px 8px;
+                "
+              >
+                {% for aspek, sentimen in hasil_prediksi.items() %} {% set bg =
+                'rgba(144,238,144,0.15)' if sentimen == 'Positif' else
+                'rgba(255,182,193,0.15)' %}
+
+                <div
+                  class="prediction-row"
+                  style="
+                    display: flex;
+                    padding: 12px 16px;
+                    border-bottom: 1px solid #eee;
+                    font-size: 14px;
+                    background-color: #fff;
+                  "
+                >
+                  <div style="flex: 1; color: #333">{{ aspek }}</div>
+                  <div style="flex: 1; color: #333">{{ sentimen }}</div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          {% elif original %}
+          <div
+            id="result-container"
+            style="
+              background: #f3f3f3;
+              padding: 30px;
+              border-radius: 10px;
+              margin-top: 40px;
+              /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              text-align: left;
+              width: 100%;
+              max-width: inherit;
+            "
+          >
+            <h3 style="font-size: 18px; font-weight: 600">Hasil Prediksi:</h3>
+            <p style="margin-top: 10px">
+              ⚠️ Tidak ada aspek yang terdeteksi dari ulasan ini.
+            </p>
+          </div>
+
+          <!-- HASIL PREDIKSI CSV -->
+          {% endif %} {% if hasil_tabel %}
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+            "
+          >
+            <div
+              id="result-container"
+              style="
+                background: #f3f3f3;
+                padding: 30px;
+                border-radius: 10px;
+                margin-top: 40px;
+                /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                text-align: left;
+                width: 100%;
+                max-width: inherit;
+                overflow-x: auto;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 10px;
+                "
+              >
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0">
+                  Hasil Prediksi CSV:
+                </h3>
+
+                <button
+                  onclick="showDownloadConfirm()"
+                  style="
+                    background-color: #37b5b6;
+                    color: white;
+                    border: none;
+                    padding: 8px 20px;
+                    border-radius: 30px;
+                    cursor: pointer;
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 14px;
+                    transition: background-color 0.2s ease-in-out,
+                      box-shadow 0.2s ease-in-out;
+                  "
+                  onmouseover="this.style.backgroundColor='#48a6a7'"
+                  onmouseout="this.style.backgroundColor='#37b5b6'"
+                  onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                  onmouseup="this.style.boxShadow='none'"
+                  onmouseleave="this.style.boxShadow='none'"
+                >
+                  Unduh File
+                </button>
+              </div>
+
+              <table
+                id="prediction-table"
+                border="1"
+                cellpadding="8"
+                cellspacing="0"
+                style="font-size: 14px; width: 100%; border-collapse: collapse"
+              >
+                <thead style="background-color: #6a0dad; color: white">
+                  <tr>
+                    <th class="exclude-download" style="text-align: center">
+                      no.
+                    </th>
+                    {% for key in hasil_tabel[0].keys() %}
+                    <th style="text-align: center">{{ key }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+
+                <tbody style="background-color: white; color: black">
+                  {% for row in hasil_tabel %}
+                  <tr class="table-row">
+                    <td class="exclude-download" style="text-align: center">
+                      {{ loop.index }}
+                    </td>
+                    {% for key, value in row.items() %} {% if key == 'review' %}
+                    <td style="text-align: left">{{ value }}</td>
+                    {% elif value == 'Positif' %}
+                    <td
+                      style="
+                        text-align: center;
+                        background-color: #e0f7f6;
+                        color: #007a78;
+                        font-weight: 600;
+                      "
+                    >
+                      {{ value }}
+                    </td>
+                    {% elif value == 'Negatif' %}
+                    <td
+                      style="
+                        text-align: center;
+                        background-color: #ffe6e6;
+                        color: #d32f2f;
+                        font-weight: 600;
+                      "
+                    >
+                      {{ value }}
+                    </td>
+                    {% else %}
+                    <td style="text-align: center">{{ value }}</td>
+                    {% endif %} {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+              <!-- CSS Modal -->
+              <style>
+                /* Pastikan semua tombol pakai Poppins */
+                .btn-cancel,
+                .btn-download,
+                .modal-close {
+                  font-family: "Poppins", sans-serif;
+                }
+
+                .btn-cancel:hover {
+                  background-color: #d4d4d4 !important;
+                }
+
+                .btn-download:hover {
+                  background-color: #4b0082 !important;
+                }
+
+                .modal-close:hover {
+                  background-color: #eee !important;
+                  color: #111 !important;
+                  border-radius: 20%;
+                }
+              </style>
+
+              <!-- MODAL KONFIRMASI DOWNLOAD -->
+              <div
+                id="download-confirm"
+                style="
+                  display: none;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.7);
+                  z-index: 9999;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <div
+                  id="modal-animate"
+                  class="modal-animate animate__animated"
+                  style="
+                    background: white;
+                    padding: 30px;
+                    border-radius: 16px;
+                    width: 90%;
+                    max-width: 450px;
+                    max-height: 90vh;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+                    overflow-y: auto;
+                  "
+                >
+                  <!-- Modal Header -->
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      border-bottom: 1px solid #ddd;
+                      padding-bottom: 15px;
+                    "
+                  >
+                    <h3
+                      style="
+                        margin: 0;
+                        font-size: 20px;
+                        font-weight: 600;
+                        color: #333;
+                      "
+                    >
+                      Konfirmasi Unduhan
+                    </h3>
+                    <button
+                      class="modal-close"
+                      onclick="hideDownloadConfirm()"
+                      style="
+                        background: transparent;
+                        border: none;
+                        cursor: pointer;
+                        font-size: 18px;
+                        color: #555;
+                        padding: 4px;
+                        transition: all 0.2s ease-in-out;
+                      "
+                      title="Tutup"
+                    >
+                      ✖
+                    </button>
+                  </div>
+
+                  <!-- Modal Body -->
+                  <div
+                    style="
+                      margin-top: 20px;
+                      color: #444;
+                      font-size: 15px;
+                      line-height: 1.6;
+                      font-family: 'Poppins', sans-serif;
+                    "
+                  >
+                    Apakah Anda yakin ingin mengunduh file
+                    <strong style="color: #4b0082">
+                      {{ nama_file_predict if nama_file_predict else
+                      'predict_review_results.csv' }}
+                    </strong>
+                    ?
+                  </div>
+
+                  <!-- Modal Footer -->
+                  <div
+                    style="
+                      display: flex;
+                      flex-wrap: wrap;
+                      justify-content: flex-end;
+                      margin-top: 30px;
+                      border-top: 1px solid #ddd;
+                      padding-top: 20px;
+                      gap: 12px;
+                    "
+                  >
+                    <!-- Batal -->
+                    <button
+                      onclick="hideDownloadConfirm()"
+                      class="btn-cancel"
+                      style="
+                        background: #eeeeee;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        font-size: 15px;
+                        color: #333;
+                        transition: background-color 0.2s ease;
+                        flex: 1 1 auto;
+                      "
+                    >
+                      Batal
+                    </button>
+
+                    <!-- Ya, Unduh -->
+                    <button
+                      onclick="downloadCSVNow()"
+                      class="btn-download"
+                      style="
+                        background: #6a0dad;
+                        color: white;
+                        border: none;
+                        padding: 10px 22px;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        font-size: 15px;
+                        transition: background-color 0.2s ease;
+                        flex: 1 1 auto;
+                      "
+                    >
+                      Unduh
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Navigasi Halaman Hasil Prediksi CSV -->
+              <div id="pagination" style="margin-top: 30px; text-align: center">
+                <style>
+                  .pagination-btn {
+                    background-color: #37b5b6;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    margin: 0 3px;
+                    font-size: 14px;
+                    border-radius: 30px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+                    font-family: "Poppins", sans-serif;
+                  }
+
+                  .pagination-btn:hover {
+                    background-color: #48a6a7;
+                    /* Tidak ada box-shadow di hover */
+                  }
+
+                  #page-info {
+                    margin: 0 10px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    font-family: "Poppins", sans-serif;
+                  }
+                </style>
+
+                <button
+                  onclick="prevPage()"
+                  class="pagination-btn"
+                  onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                  onmouseup="this.style.boxShadow='none'"
+                  onmouseleave="this.style.boxShadow='none'"
+                >
+                  Sebelumnya
+                </button>
+                <span id="page-info"></span>
+                <button
+                  onclick="nextPage()"
+                  class="pagination-btn"
+                  onmousedown="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'"
+                  onmouseup="this.style.boxShadow='none'"
+                  onmouseleave="this.style.boxShadow='none'"
+                >
+                  Berikutnya
+                </button>
+              </div>
+
+              <div style="border-top: 2px solid #e0e0e0; margin: 20px 0"></div>
+              <!-- Menambahkan barchart di bawah tabel prediksi -->
+              {% if chart_data %}
+              <!-- Bar Chart -->
+              <canvas id="barChart" height="200"></canvas>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+              <script>
+                const orderedAspek = [
+                  "Transaction Efficiency",
+                  "User Experience",
+                  "Account Access and Registration",
+                  "Balance and Charges"
+                ];
+
+                const chartData = {{ chart_data | tojson | safe }};
+                const positif = orderedAspek.map(a => chartData[a] ? chartData[a]["Positif"] : 0);
+                const negatif = orderedAspek.map(a => chartData[a] ? chartData[a]["Negatif"] : 0);
+
+                const ctx = document.getElementById("barChart").getContext("2d");
+                new Chart(ctx, {
+                  type: "bar",
+                  data: {
+                    labels: orderedAspek,
+                    datasets: [
+                      {
+                        label: "Positif",
+                        data: positif,
+                        backgroundColor: "#37b5b6"
+                      },
+                      {
+                        label: "Negatif",
+                        data: negatif,
+                        backgroundColor: "#ff4d4f"
+                      }
+                    ]
+                  },
+                  options: {
+                    responsive: true,
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          precision: 0
+                        }
+                      }
+                    }
+                  }
+                });
+              </script>
+              {% endif %}
+
+              <div style="border-top: 2px solid #e0e0e0; margin: 40px 0"></div>
+              <!-- Menambahkan pie chart per aspek -->
+              {% if pie_chart_data %}
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: space-around;
+                "
+              >
+                {% set orderedAspekPieChart = ["Transaction Efficiency", "User
+                Experience", "Account Access and Registration", "Balance and
+                Charges"] %} {% for aspek in orderedAspekPieChart %} {% set data
+                = pie_chart_data[aspek] %}
+                <div style="width: 300px; margin: 20px">
+                  <h4 style="text-align: center">{{ aspek }}</h4>
+                  <canvas id="pieChart_{{ loop.index }}"></canvas>
+                  <p
+                    id="description_{{ loop.index }}"
+                    style="
+                      text-align: center;
+                      margin-top: 10px;
+                      font-size: 0.9rem;
+                      line-height: 1.4;
+                      font-weight: 500;
+                    "
+                  ></p>
+                </div>
+                {% endfor %}
+              </div>
+
+              <script>
+                const pieData = {{ pie_chart_data | tojson | safe }};
+                const orderedAspekPieChart = [
+                  "Transaction Efficiency",
+                  "User Experience",
+                  "Account Access and Registration",
+                  "Balance and Charges"
+                ];
+
+                orderedAspekPieChart.forEach((aspek, index) => {
+                  const ctx = document.getElementById(`pieChart_${index + 1}`).getContext("2d");
+
+                  if (pieData[aspek]) {
+                    const { labels, values, description, dominant } = pieData[aspek];
+
+                    new Chart(ctx, {
+                      type: "pie",
+                      data: {
+                        labels: labels,
+                        datasets: [{
+                          data: values,
+                          backgroundColor: ["#37b5b6", "#ff4d4f"]
+                        }]
+                      },
+                      options: {
+                        responsive: true,
+                        plugins: {
+                          legend: {
+                            position: "bottom"
+                          },
+                          datalabels: {
+                            formatter: (value, context) => {
+                              const sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                              const percentage = ((value / sum) * 100).toFixed(1) + "%";
+                              return percentage;
+                            },
+                            color: "#fff",
+                            font: {
+                              weight: "bold"
+                            }
+                          }
+                        }
+                      },
+                      plugins: [ChartDataLabels]
+                    });
+
+                    // Set description text
+                    const descriptionEl = document.getElementById(`description_${index + 1}`);
+                    if (descriptionEl) {
+                      descriptionEl.textContent = description;
+                    }
+                  }
+                });
+              </script>
+
+              {% endif %} {% if wordclouds %}
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: space-around;
+                  margin-top: 40px;
+                "
+              >
+                {% for aspek, wordcloud_image in wordclouds.items() %}
+                <div style="width: 300px; margin: 20px">
+                  <h4 style="text-align: center">{{ aspek }}</h4>
+                  <img
+                    src="{{ wordcloud_image }}"
+                    alt="WordCloud for {{ aspek }}"
+                    style="width: 100%"
+                  />
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Toast Notification -->
+          <div
+            id="toast"
+            class="animate__animated"
+            style="
+              position: fixed;
+              top: 20px;
+              left: 0;
+              right: 0;
+              margin: auto;
+              background: #ff0000;
+              color: #ffffff;
+              padding: 12px 20px;
+              border-radius: 12px;
+              font-size: 14px;
+              text-align: center;
+              max-width: 900px;
+              width: fit-content;
+              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+              display: none;
+              opacity: 0;
+              z-index: 9999;
+            "
+          >
+            Silakan masukkan teks atau unggah file CSV terlebih dahulu.
+          </div>
+
+          <!-- Fungsi Toast Notifications -->
+          <script>
+            function showToast() {
+              const toast = document.getElementById("toast");
+
+              // Reset animasi
+              toast.classList.remove("animate__fadeOutUp");
+              toast.classList.add("animate__fadeInDown");
+
+              toast.style.display = "block";
+              toast.style.opacity = "1";
+
+              // Sembunyikan toast setelah 5 detik
+              setTimeout(() => {
+                toast.style.opacity = "0";
+                setTimeout(() => (toast.style.display = "none"), 500);
+              }, 5000);
+            }
+          </script>
+
+          <!-- FUNGSI PAGINATION HASIL PREDIKSI CSV -->
+          <script>
+            const rows = document.querySelectorAll(".table-row");
+            const rowsPerPage = 10;
+            let currentPage = 1;
+
+            function showPage(page) {
+              const start = (page - 1) * rowsPerPage;
+              const end = start + rowsPerPage;
+
+              rows.forEach((row, index) => {
+                row.style.display =
+                  index >= start && index < end ? "table-row" : "none";
+              });
+
+              const totalPages = Math.ceil(rows.length / rowsPerPage);
+              const pageInfo = document.getElementById("page-info");
+              if (pageInfo) {
+                pageInfo.textContent = `Halaman ${page} dari ${Math.ceil(
+                  rows.length / rowsPerPage
+                )}`;
+              }
+
+              const prevBtn = document.querySelector(
+                "#pagination button[onclick='prevPage()']"
+              );
+              const nextBtn = document.querySelector(
+                "#pagination button[onclick='nextPage()']"
+              );
+
+              if (prevBtn)
+                prevBtn.style.display = page > 1 ? "inline-block" : "none";
+              if (nextBtn)
+                nextBtn.style.display =
+                  page < totalPages ? "inline-block" : "none";
+
+              const pagination =
+                document.getElementById("hasil-pagination") ||
+                document.getElementById("pagination");
+              if (pagination) {
+                pagination.style.display =
+                  rows.length > rowsPerPage ? "block" : "none";
+              }
+            }
+
+            // Fungsi Tombol Berikutnya
+            function nextPage() {
+              const totalPages = Math.ceil(rows.length / rowsPerPage);
+              if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+              }
+            }
+
+            // Fungsi Tombol Sebelumnya
+            function prevPage() {
+              if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+              }
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+              showPage(currentPage);
+            });
+          </script>
+
+          <!-- Fungsi Text Input -->
+          <script>
+            function handleTextInput() {
+              const inputField = document.getElementById("input-text");
+              const clearBtn = document.getElementById("clear-btn");
+              const fileInput = document.getElementById("file-upload");
+
+              if (inputField.value.trim() !== "") {
+                clearBtn.style.display = "block";
+                fileInput.disabled = true;
+              } else {
+                clearBtn.style.display = "none";
+                fileInput.disabled = false;
+              }
+            }
+
+            // Fungsi Hapus Teks/Kalimat
+            function clearInput(event) {
+              event.preventDefault();
+
+              const inputField = document.getElementById("input-text");
+              const clearBtn = document.getElementById("clear-btn");
+              const fileInput = document.getElementById("file-upload");
+
+              inputField.value = "";
+              clearBtn.style.display = "none";
+              fileInput.disabled = false;
+
+              // Sembunyikan hasil prediksi teks
+              const resultContainer = document.getElementById(
+                "text-result-container"
+              );
+              if (resultContainer) {
+                resultContainer.style.display = "none";
+              }
+
+              // Trigger ulang jika perlu
+              handleTextInput();
+            }
+
+            // Jalankan handleTextInput saat halaman dimuat
+            window.addEventListener("DOMContentLoaded", () => {
+              handleTextInput();
+              handleFileInput();
+            });
+          </script>
+
+          {% if hasil_tabel %}
+          <script>
+            window.addEventListener("DOMContentLoaded", () => {
+              const inputField = document.getElementById("input-text");
+              const fileInput = document.getElementById("file-upload");
+              const submitBtn = document.getElementById("submit-btn");
+              const submitText = document.getElementById("submit-text");
+              const fileDisplay = document.getElementById("file-name");
+              const fileName = "{{ nama_file }}";
+
+              if (fileDisplay && fileName) {
+                fileDisplay.innerText = "📄 File: " + fileName;
+              }
+
+              // Nonaktifkan input teks dan unggah file
+              if (inputField) inputField.disabled = true;
+              if (fileInput) fileInput.disabled = true;
+
+              // Ubah tombol menjadi "Mulai Ulang"
+              if (submitText) submitText.innerText = "Mulai Ulang";
+
+              // Jadikan tombol redirect
+              if (submitBtn) {
+                submitBtn.onclick = function () {
+                  window.location.href =
+                    "{{ url_for('predict_aspect_sentiment') }}";
+                };
+              }
+            });
+          </script>
+          {% endif %} {% if nama_file %} {% endif %}
+
+          <script>
+            document
+              .getElementById("form-analisis")
+              .addEventListener("submit", function (e) {
+                const inputField = document.getElementById("input-text");
+                const fileInput = document.getElementById("file-upload");
+
+                const isTextFilled = inputField.value.trim() !== "";
+                const isFileSelected = fileInput.files.length > 0;
+
+                // Jika tidak ada input sama sekali, tampilkan toast dan cegah submit
+                if (!isTextFilled && !isFileSelected) {
+                  e.preventDefault(); // cegah submit form ke server
+                  showToast();
+                }
+              });
+          </script>
+
+          <!-- Fungsi Tombol Analisis -->
+          <script>
+            function validateAndSubmit() {
+              const form = document.getElementById("form-analisis");
+              const inputField = document.getElementById("input-text");
+              const fileInput = document.getElementById("file-upload");
+              const submitBtn = document.getElementById("submit-btn");
+              const submitText = document.getElementById("submit-text");
+              const submitLoader = document.getElementById("submit-loader");
+              const loadingIndicator =
+                document.getElementById("loading-indicator");
+              const previewContainer = document.getElementById(
+                "csv-preview-container"
+              );
+
+              const isTextFilled = inputField.value.trim() !== "";
+              const isFileSelected = fileInput.files.length > 0;
+
+              if (!isTextFilled && !isFileSelected) {
+                showToast();
+              } else {
+                // Tambahkan class loading agar style bisa diatur melalui CSS
+                submitBtn.classList.add("loading");
+
+                // Nonaktifkan tombol
+                submitBtn.disabled = true;
+
+                // Ubah tampilan tombol
+                submitBtn.style.background = "#48a6a7";
+                submitText.style.display = "none";
+                submitLoader.style.display = "inline-block";
+
+                // Sembunyikan preview dan tampilkan indikator loading jika file dipilih
+                if (isFileSelected) {
+                  if (previewContainer) previewContainer.style.display = "none";
+                  if (loadingIndicator) {
+                    loadingIndicator.style.display = "block";
+                    animateProgressBar();
+                  }
+                }
+
+                // Submit form
+                form.submit();
+              }
+            }
+
+            // Fungsi Animasi Progress Bar
+            function animateProgressBar() {
+              const bar = document.getElementById("progress-bar");
+              let progress = 0;
+              const interval = setInterval(() => {
+                if (progress >= 100) {
+                  clearInterval(interval);
+                } else {
+                  progress += Math.floor(Math.random() * 5 + 1); // random 1-5%
+                  if (progress > 100) progress = 100;
+                  bar.style.width = progress + "%";
+                  bar.innerText = progress + "%";
+                }
+              }, 700); // update setiap 200ms
+            }
+          </script>
+
+          <script>
+            function handleFileInput() {
+              const fileInput = document.getElementById("file-upload");
+              const inputField = document.getElementById("input-text");
+              const clearBtn = document.getElementById("clear-btn");
+              const fileDisplay = document.getElementById("file-name");
+
+              if (fileInput.files.length > 0) {
+                inputField.disabled = true;
+                clearBtn.style.display = "none";
+
+                // Tampilkan nama file yang dipilih
+                if (fileDisplay) {
+                  fileDisplay.innerText = "📄 File: " + fileInput.files[0].name;
+                }
+              } else {
+                inputField.disabled = false;
+
+                // Hapus nama file jika tidak ada yang dipilih
+                if (fileDisplay) {
+                  fileDisplay.innerText = "";
+                }
+              }
+            }
+          </script>
+
+          <!-- FUNGSI PAGINATION PREVIEW CSV -->
+          <script>
+            // 🟣 Variabel global untuk preview pagination
+            let previewRows = [];
+            let previewPage = 1;
+            const previewPerPage = 10;
+
+            // 🟢 Tampilkan halaman preview
+            function displayPreviewPage(page) {
+              const previewTable = document.getElementById("csv-preview-table");
+              const pageInfo = document.getElementById("csv-page-info");
+
+              const start = (page - 1) * previewPerPage;
+              const end = start + previewPerPage;
+              const sliced = previewRows.slice(start, end);
+
+              let tableHTML = `
+      <thead style="background-color: #6a0dad; color: white">
+        <tr>
+          <th style="text-align:center">no.</th>
+          <th style="text-align:center">review</th>
+        </tr>
+      </thead>
+      <tbody>
+    `;
+
+              sliced.forEach((review, index) => {
+                const nomor = (page - 1) * previewPerPage + index + 1;
+                tableHTML += `
+        <tr class="preview-row">
+          <td style="text-align:center">${nomor}</td>
+          <td style="text-align:left">${review}</td>
+        </tr>
+      `;
+              });
+
+              tableHTML += "</tbody>";
+              if (previewTable) previewTable.innerHTML = tableHTML;
+
+              const totalPages = Math.ceil(previewRows.length / previewPerPage);
+              pageInfo.textContent = `Halaman ${page} dari ${totalPages}`;
+
+              // Tampilkan / sembunyikan tombol berdasarkan halaman
+              const prevBtn = document.querySelector(
+                "#csv-preview-pagination button[onclick='prevPreviewPage()']"
+              );
+              const nextBtn = document.querySelector(
+                "#csv-preview-pagination button[onclick='nextPreviewPage()']"
+              );
+
+              if (prevBtn)
+                prevBtn.style.display = page > 1 ? "inline-block" : "none";
+              if (nextBtn)
+                nextBtn.style.display =
+                  page < totalPages ? "inline-block" : "none";
+
+              // if (pageInfo) {
+              //   pageInfo.textContent = `Halaman ${page} dari ${Math.ceil(
+              //     previewRows.length / previewPerPage
+              //   )}`;
+              // }
+
+              const pagination = document.getElementById(
+                "csv-preview-pagination"
+              );
+              if (pagination) pagination.style.display = "block";
+            }
+
+            function prevPreviewPage() {
+              if (previewPage > 1) {
+                previewPage--;
+                displayPreviewPage(previewPage);
+              }
+            }
+
+            function nextPreviewPage() {
+              const totalPages = Math.ceil(previewRows.length / previewPerPage);
+              if (previewPage < totalPages) {
+                previewPage++;
+                displayPreviewPage(previewPage);
+              }
+            }
+
+            // 🟠 Saat file CSV diunggah
+            document
+              .getElementById("file-upload")
+              .addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                const previewContainer = document.getElementById(
+                  "csv-preview-container"
+                );
+                const previewTable =
+                  document.getElementById("csv-preview-table");
+
+                if (!file || !file.name.endsWith(".csv")) {
+                  previewContainer.style.display = "none";
+                  return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                  const text = event.target.result;
+                  const lines = text
+                    .split("\n")
+                    .filter((line) => line.trim() !== "");
+
+                  if (lines.length === 0) {
+                    previewContainer.style.display = "none";
+                    return;
+                  }
+
+                  // 🧠 Temukan index kolom 'review'
+                  const headers = lines[0].split(
+                    /,(?=(?:(?:[^"]*"){2})*[^"]*$)/
+                  );
+                  const reviewIndex = headers.findIndex(
+                    (h) => h.trim().toLowerCase() === "review"
+                  );
+
+                  if (reviewIndex === -1) {
+                    previewTable.innerHTML =
+                      "<tbody><tr><td colspan='2' style='text-align:center'>Tidak ditemukan kolom 'review'.</td></tr></tbody>";
+                    previewContainer.style.display = "block";
+                    return;
+                  }
+
+                  // 🔁 Simpan isi kolom review
+                  previewRows = [];
+                  for (let i = 1; i < lines.length; i++) {
+                    const cells = lines[i].split(
+                      /,(?=(?:(?:[^"]*"){2})*[^"]*$)/
+                    );
+                    if (!cells[reviewIndex]) continue;
+
+                    let reviewText = cells[reviewIndex].trim();
+                    if (
+                      reviewText.startsWith('"') &&
+                      reviewText.endsWith('"')
+                    ) {
+                      reviewText = reviewText.slice(1, -1);
+                    }
+
+                    previewRows.push(reviewText || "(Kosong)");
+                  }
+
+                  // Tampilkan halaman pertama
+                  previewPage = 1;
+                  displayPreviewPage(previewPage);
+                  previewContainer.style.display = "none"; // block
+                };
+
+                reader.onerror = function () {
+                  alert("Gagal membaca file CSV.");
+                  previewContainer.style.display = "none";
+                };
+
+                reader.readAsText(file);
+              });
+          </script>
+
+          <!-- FUNGSI DOWNLOAD FILE CSV -->
+          <script>
+            function showDownloadConfirm() {
+              const modal = document.getElementById("download-confirm");
+              const modalAnimate = document.getElementById("modal-animate");
+              document.getElementById("download-confirm").style.display =
+                "flex";
+              // Tampilkan modal
+              modal.style.display = "flex";
+
+              // Tambahkan kelas animasi
+              modalAnimate.classList.add("animate__bounceInDown");
+
+              // Hapus kelas animasi setelah selesai
+              modalAnimate.addEventListener("animationend", function () {
+                modalAnimate.classList.remove("animate__bounceInDown");
+              });
+            }
+
+            // Fungsi untuk menyembunyikan modal
+            function hideDownloadConfirm() {
+              document.getElementById("download-confirm").style.display =
+                "none";
+            }
+
+            // Fungsi unduh file CSV
+            function downloadCSVNow() {
+              hideDownloadConfirm();
+
+              const table = document.getElementById("prediction-table");
+              const rows = Array.from(table.querySelectorAll("tr"));
+
+              const csv = rows
+                .map((row) =>
+                  Array.from(row.querySelectorAll("th, td"))
+                    .filter(
+                      (cell) => !cell.classList.contains("exclude-download")
+                    )
+                    .map((cell) => `"${cell.innerText.replace(/"/g, '""')}"`)
+                    .join(",")
+                )
+                .join("\n");
+
+              const blob = new Blob([csv], { type: "text/csv" });
+              const link = document.createElement("a");
+
+              const fileName = "{{ nama_file_predict }}";
+              link.download = fileName;
+              link.href = URL.createObjectURL(blob);
+              link.click();
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
