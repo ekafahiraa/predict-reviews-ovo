@@ -1,14 +1,14 @@
 🧠 Predict Reviews OVO
 
 Aspect-Based Sentiment Analysis on User Perceptions of the OVO App Using Support Vector Machine (SVM)
-This project is a Flask-based web application that performs sentiment analysis on OVO app reviews. It allows users to predict sentiment either by entering text or uploading a CSV file. The system visualizes sentiment distribution using charts and provides CSV download functionality for the predicted results.
+This project is a Flask-based web application that performs aspect and sentiment analysis on OVO app reviews. It allows users to predict aspect and sentiment either by entering text or uploading a CSV file. The system visualizes sentiment distribution using charts and provides CSV download functionality for the predicted results.
 
 🚀 Features
-📝 Text Input Prediction: Users can predict sentiment by typing a review directly into the form.
+📝 Text Input Prediction: Users can predict aspect and sentiment by typing a review directly into the form.
 📂 CSV File Upload: Users can upload a CSV file containing multiple reviews for bulk prediction.
 👀 CSV Data Preview: Uploaded CSV data and prediction results are displayed in a clean, paginated table (10 rows per page).
 📊 Data Visualization: Displays a bar chart and pie chart showing the sentiment distribution and percentage across different aspects.
-💾 CSV Download: Users can download the CSV file containing the predicted sentiment results.
+💾 CSV Download: Users can download the CSV file containing the predicted aspect and sentiment results.
 
 📊 Example Visualizations
 Below are sample results from the prediction output:
