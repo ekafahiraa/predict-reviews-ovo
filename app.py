@@ -22,6 +22,28 @@ app.secret_key = "s3cr3t_@spekSentimen2025" # Kunci rahasia untuk session
 # Simpan progress dummy berdasarkan session
 progress_data = {}
 
+# --- Tambahan: Auto-download model dari Google Drive ---
+os.makedirs("model", exist_ok=True)
+
+MODEL_ID = "1lAmTK6mD0ouhapLunkQSghtXixgsYZQt"
+MODEL_PATH = "model/model9_svm_rbf_nosmote.pkl"
+
+def download_model_from_gdrive():
+    if not os.path.exists(MODEL_PATH):
+        print("📥 Mengunduh model dari Google Drive...")
+        import requests
+        url = f"https://drive.google.com/uc?export=download&id={MODEL_ID}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(MODEL_PATH, "wb") as f:
+                f.write(response.content)
+            print("✅ Model berhasil diunduh.")
+        else:
+            print(f"⚠️ Gagal mengunduh model. Status code: {response.status_code}")
+            raise Exception("Gagal mengunduh model dari Google Drive")
+
+download_model_from_gdrive()
+
 # Load model dan vectorizer hanya sekali saat aplikasi dijalankan
 with open("model/model9_svm_rbf_nosmote.pkl", "rb") as f:
     loaded_model = pickle.load(f)
